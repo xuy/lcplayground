@@ -5,7 +5,7 @@ import urllib2
 
 from pymongo import MongoClient
 from lib.read_decorators import SkipFirst
-from lib.read_decorators import ReplaceFirsti
+from lib.read_decorators import ReplaceFirst
 
 client = MongoClient()
 db = client["lending_club"]

@@ -5,7 +5,7 @@ import urllib2
 
 from pymongo import MongoClient
 from lib.read_decorators import SkipFirst
-from lib.read_decorators import ReplaceFirst
+from lib.read_decorators import ReplaceFirsti
 
 client = MongoClient()
 db = client["lending_club"]
@@ -20,6 +20,7 @@ details = csv.DictReader(ReplaceFirst(SkipFirst(response)))
 count = 0
 updated = 0
 inserted = 0
+existed = 0
 
 for row in details:
   count += 1
@@ -30,6 +31,7 @@ for row in details:
   target = {"id" : loan["id"]}
   existing_loan = loans.find_one(target)
   if existing_loan:
+    existed += 1
     # TODO: compare the two
     is_updated = False
     for key in loan.keys():
@@ -47,4 +49,4 @@ for row in details:
     loan["last_seen"] = datetime.datetime.utcnow()
     loans.insert(loan)
 
-print "Got ", count,  "loans. New loans: ", inserted
+print "Total: ", count, "\tNew: ", inserted, "\tOld: ", existed, "\tUpdated: ", updated
